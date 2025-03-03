@@ -35,5 +35,7 @@ splited['ind2word']=ind2word
 
 with open ('words_dict.json','w') as out:
     json.dump(splited,out)
-        
+
+
+
    

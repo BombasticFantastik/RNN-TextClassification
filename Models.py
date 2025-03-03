@@ -1,6 +1,25 @@
 from torch import nn
 from torch.nn import Module
 
+import json
+json_path='words_dict.json'
+with open(json_path,'r') as file_option:
+    vocab=json.load(file_option)
+vocab_size=len(vocab['word2ind'])
+print(vocab_size)
+
+
+def get_network(option):
+    arch=option['arch']
+    input_size=option['sizes']['input_size']
+    hidden_size=option['sizes']['hidden_size']
+    output_size=option['sizes']['output_size']
+    if arch=='rnn':
+        return rnn_net(input_size,hidden_size,output_size,vocab_size)
+    if arch=='gru':
+        return gru_net(input_size,hidden_size,output_size,vocab_size)
+
+
 class rnn_net(Module):
     def __init__(self,inp_size,hidden_size,out_size,vocab_size):
         super(rnn_net,self).__init__()

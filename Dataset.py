@@ -1,21 +1,20 @@
 import yaml
+import json
 option_path='config.yml'
-from words_dict import word2ind,ind2word
+json_path='words_dict.json'
 
 with open(option_path,'r') as file_option:
     option=yaml.safe_load(file_option)
-#device=file_option['device']
-device='cuda'
+device=option['device']
+
+with open(json_path,'r') as file_option:
+    vocab=json.load(file_option)
+word2ind=vocab['word2ind']
 
 import torch
 from torch.utils.data import Dataset
 import string
 from gensim.utils import tokenize
-
-
-
-
-
 
 
 class WordDataset(Dataset):
