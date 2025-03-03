@@ -1,0 +1,5 @@
+model: gru_model
+hidden_size: 256
+output_size: 4
+device: cuda
+
