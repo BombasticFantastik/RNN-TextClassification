@@ -1,5 +1,5 @@
 device: cuda
-arch: gru
+arch: lstm
 sizes:
   input_size: 256
   hidden_size: 256

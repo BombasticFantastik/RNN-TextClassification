@@ -6,7 +6,7 @@ json_path='words_dict.json'
 with open(json_path,'r') as file_option:
     vocab=json.load(file_option)
 vocab_size=len(vocab['word2ind'])
-print(vocab_size)
+
 
 
 def get_network(option):
@@ -18,6 +18,8 @@ def get_network(option):
         return rnn_net(input_size,hidden_size,output_size,vocab_size)
     if arch=='gru':
         return gru_net(input_size,hidden_size,output_size,vocab_size)
+    if arch=='lstm':
+        return lstm_net(input_size,hidden_size,output_size,vocab_size)
 
 
 class rnn_net(Module):
@@ -57,3 +59,23 @@ class gru_net(Module):
         out=self.fin_lin(agregated_x)
         
         return out
+    
+class lstm_net(Module):
+    def __init__(self,inp_size,hidden_size,out_size,vocab_size):
+        super(lstm_net,self).__init__()
+
+        self.emb=nn.Embedding(vocab_size,hidden_size)
+        self.gru=nn.LSTM(hidden_size,hidden_size,num_layers=3)
+        self.fin_lin=nn.Linear(hidden_size,out_size)
+        self.tahn=nn.Tanh()
+    def forward(self,text):
+        x=self.emb(text)
+        x,_=self.gru(x)
+        x=self.tahn(x)
+
+        #агрегация эмбрендингов 
+        agregated_x=x.mean(dim=1)
+
+        out=self.fin_lin(agregated_x)
+        
+        return out    
