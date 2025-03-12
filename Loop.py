@@ -1,4 +1,5 @@
 from tqdm import tqdm 
+import torch
 
 def training(model,dataloader,loss_func,optimizer):
     losses=[]
@@ -18,6 +19,9 @@ def training(model,dataloader,loss_func,optimizer):
         optimizer.step()
 
         pbar.set_description(f'{loss_item}')
+
+        torch.save(model.state_dict(),'model_weights.pth')
+
     return losses
 
         

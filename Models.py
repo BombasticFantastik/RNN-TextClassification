@@ -79,3 +79,24 @@ class lstm_net(Module):
         out=self.fin_lin(agregated_x)
         
         return out    
+    
+
+class lstm_mark2_net(Module):
+    def __init__(self,inp_size,hidden_size,out_size,vocab_size):
+        super(lstm_net,self).__init__()
+
+        self.emb=nn.Embedding(vocab_size,hidden_size)
+        self.gru=nn.LSTM(hidden_size,hidden_size,num_layers=3)
+        self.fin_lin=nn.Linear(hidden_size,out_size)
+        self.tahn=nn.Tanh()
+    def forward(self,text):
+        x=self.emb(text)
+        x,_=self.gru(x)
+        x=self.tahn(x)
+
+        #агрегация эмбрендингов 
+        agregated_x=x.mean(dim=1)
+
+        out=self.fin_lin(agregated_x)
+        
+        return out
