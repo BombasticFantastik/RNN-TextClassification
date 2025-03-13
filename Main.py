@@ -11,10 +11,13 @@ import numpy as np
 import os
 
 
+
+
 option_path='config.yml'
 with open(option_path,'r') as file_option:
     option=yaml.safe_load(file_option)
 device=option['device']
+batch_size=option['sizes']['batch_size']
 
 json_path='words_dict.json'
 with open(json_path,'r') as file_option:
@@ -29,8 +32,8 @@ train_dataset=WordDataset(newsdata['train'])
 idx = np.random.choice(np.arange(len(newsdata['test'])), 1000)
 eval_dataset=WordDataset(newsdata['test'].select(idx))
 
-train_dataloader=DataLoader(train_dataset,batch_size=32,shuffle=True,collate_fn=make_batch)
-eval_dataloader=DataLoader(eval_dataset,batch_size=32,shuffle=False,collate_fn=make_batch)
+train_dataloader=DataLoader(train_dataset,batch_size=batch_size,shuffle=True,collate_fn=make_batch)
+eval_dataloader=DataLoader(eval_dataset,batch_size=batch_size,shuffle=False,collate_fn=make_batch)
 
 model=get_network(option).to(device)
 loss_func=nn.CrossEntropyLoss(ignore_index=word2ind['<pad>'])

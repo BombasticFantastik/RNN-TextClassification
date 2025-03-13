@@ -5,3 +5,4 @@ sizes:
   hidden_size: 256
   output_size: 4
   vocab_size: 10
+  batch_size: 16

@@ -1,5 +1,10 @@
 from tqdm import tqdm 
 import torch
+import yaml
+
+option_path='config.yml'
+with open(option_path,'r') as file_option:
+    option=yaml.safe_load(file_option)
 
 def training(model,dataloader,loss_func,optimizer):
     losses=[]
@@ -20,7 +25,7 @@ def training(model,dataloader,loss_func,optimizer):
 
         pbar.set_description(f'{loss_item}')
 
-        torch.save(model.state_dict(),'model_weights.pth')
+        torch.save(model.state_dict(),f'weights/{option['arch']}_weights.pth')
 
     return losses
 
