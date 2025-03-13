@@ -36,6 +36,12 @@ train_dataloader=DataLoader(train_dataset,batch_size=batch_size,shuffle=True,col
 eval_dataloader=DataLoader(eval_dataset,batch_size=batch_size,shuffle=False,collate_fn=make_batch)
 
 model=get_network(option).to(device)
+
+
+weights_dict=torch.load(f'weights/{option['arch']}_weights.pth',weights_only=True)
+model.load_state_dict(weights_dict)
+
+
 loss_func=nn.CrossEntropyLoss(ignore_index=word2ind['<pad>'])
 optimizer=torch.optim.Adam(model.parameters())
 
