@@ -29,11 +29,10 @@ word2ind=vocab['word2ind']
 newsdata=datasets.load_dataset('ag_news')
 train_dataset=WordDataset(newsdata['train'])
 
-idx = np.random.choice(np.arange(len(newsdata['test'])), 1000)
-eval_dataset=WordDataset(newsdata['test'].select(idx))
+
 
 train_dataloader=DataLoader(train_dataset,batch_size=batch_size,shuffle=True,collate_fn=make_batch)
-eval_dataloader=DataLoader(eval_dataset,batch_size=batch_size,shuffle=False,collate_fn=make_batch)
+
 
 model=get_network(option).to(device)
 
