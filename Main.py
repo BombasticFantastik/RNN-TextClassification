@@ -36,9 +36,9 @@ train_dataloader=DataLoader(train_dataset,batch_size=batch_size,shuffle=True,col
 
 model=get_network(option).to(device)
 
-
-weights_dict=torch.load(f'weights/{option['arch']}_weights.pth',weights_only=True)
-model.load_state_dict(weights_dict)
+if option['arch'] in os.listdir('weights'):
+    weights_dict=torch.load(f'weights/{option['arch']}_weights.pth',weights_only=True)
+    model.load_state_dict(weights_dict)
 
 
 loss_func=nn.CrossEntropyLoss(ignore_index=word2ind['<pad>'])

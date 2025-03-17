@@ -20,6 +20,8 @@ def get_network(option):
         return gru_net(input_size,hidden_size,output_size,vocab_size)
     if arch=='lstm':
         return lstm_net(input_size,hidden_size,output_size,vocab_size)
+    if arch=='lstm_hard':
+        return lstm_hard_net(input_size,hidden_size,output_size,vocab_size)
 
 
 class rnn_net(Module):
@@ -65,38 +67,45 @@ class lstm_net(Module):
         super(lstm_net,self).__init__()
 
         self.emb=nn.Embedding(vocab_size,hidden_size)
-        self.gru=nn.LSTM(hidden_size,hidden_size,num_layers=3)
+        self.lstm=nn.LSTM(hidden_size,hidden_size,num_layers=3)
         self.fin_lin=nn.Linear(hidden_size,out_size)
         self.tahn=nn.Tanh()
     def forward(self,text):
         x=self.emb(text)
-        x,_=self.gru(x)
-        x=self.tahn(x)
+        x,_=self.lstm(x)
+        
 
         #агрегация эмбрендингов 
+
         agregated_x=x.mean(dim=1)
 
-        out=self.fin_lin(agregated_x)
+        
+
+        out=self.fin_lin(self.tahn(agregated_x))
         
         return out    
     
 
-class lstm_mark2_net(Module):
+class lstm_hard_net(Module):
     def __init__(self,inp_size,hidden_size,out_size,vocab_size):
-        super(lstm_net,self).__init__()
+        super(lstm_hard_net,self).__init__()
 
         self.emb=nn.Embedding(vocab_size,hidden_size)
-        self.gru=nn.LSTM(hidden_size,hidden_size,num_layers=3)
+        self.lstm=nn.LSTM(hidden_size,hidden_size,num_layers=3)
+        self.first_lin=nn.Linear(hidden_size,hidden_size)
         self.fin_lin=nn.Linear(hidden_size,out_size)
         self.tahn=nn.Tanh()
+        self.dropout=nn.Dropout(p=0.1)
     def forward(self,text):
         x=self.emb(text)
-        x,_=self.gru(x)
-        x=self.tahn(x)
+        x,_=self.lstm(x)
+
 
         #агрегация эмбрендингов 
         agregated_x=x.mean(dim=1)
 
-        out=self.fin_lin(agregated_x)
+        out=self.dropout(self.first_lin(self.tahn(agregated_x)))
+
+        out=self.fin_lin(self.tahn(out))
         
         return out
