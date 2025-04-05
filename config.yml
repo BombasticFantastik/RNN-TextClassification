@@ -1,5 +1,5 @@
 device: cuda
-arch: lstm
+arch: lstm_hard
 sizes:
   input_size: 256
   hidden_size: 256

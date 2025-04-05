@@ -41,7 +41,8 @@ model=get_network(option).to(device)
 if f'{option['arch']}_weights.pth' in os.listdir('weights'):
     weights_dict=torch.load(f'weights/{option['arch']}_weights.pth',weights_only=True)
     model.load_state_dict(weights_dict)
-    print(1)
+    print('start')
+    
 
 
 loss_func=nn.CrossEntropyLoss(ignore_index=word2ind['<pad>'])
