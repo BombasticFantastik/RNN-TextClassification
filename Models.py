@@ -103,14 +103,14 @@ class lstm_hard_net(Module):
 
 
         #агрегация эмбрендингов 
-        agregated_x=x.max(dim=1)[0]
+        agregated_x=x.mean(dim=1)
 
         out=self.dropout(self.first_lin(self.tahn(agregated_x)))
 
         out=self.tahn(out)
 
         
-        out_conc=torch.cat((ebm_x.max(dim=1)[0],out),dim=1)
+        out_conc=torch.cat((ebm_x.mean(dim=1),out),dim=1)
 
         out=self.fin_lin(out_conc)
         
